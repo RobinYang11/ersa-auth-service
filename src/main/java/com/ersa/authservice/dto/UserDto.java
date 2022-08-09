@@ -1,5 +1,9 @@
 package com.ersa.authservice.dto;
 
+
+import lombok.Data;
+
+@Data
 public class UserDto extends BaseDto {
 
     /**
