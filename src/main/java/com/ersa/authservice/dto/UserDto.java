@@ -1,12 +1,6 @@
-package com.ersa.authservice.entity;
+package com.ersa.authservice.dto;
 
-
-import lombok.Data;
-import org.springframework.data.mongodb.core.mapping.Document;
-
-@Data
-@Document("users")
-public class UserBean {
+public class UserDto extends BaseDto {
 
     /**
      * id
@@ -25,7 +19,7 @@ public class UserBean {
 
     /**
      * 密码
-      */
+     */
     private String password;
 
     /**
@@ -37,7 +31,6 @@ public class UserBean {
      * 年龄
      */
     private int age;
-
 
     /**
      * 手机号
@@ -73,5 +66,5 @@ public class UserBean {
      * 星座
      */
     private String constellation;
-
 }
+
