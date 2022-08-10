@@ -5,7 +5,7 @@ server:
 spring:
   data:
     mongodb:
-      uri: mongodb://root:1hbl#QTmongo@106.14.237.78:27017/admin
+      uri: mongodb://root:%40yang651564@106.14.237.78:27017/admin
       database: ersa
   redis:
     host: 106.14.237.78

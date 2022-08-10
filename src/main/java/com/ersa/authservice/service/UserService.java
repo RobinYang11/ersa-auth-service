@@ -1,5 +1,6 @@
 package com.ersa.authservice.service;
 
+import com.ersa.authservice.dto.UserDto;
 import com.ersa.authservice.entity.UserBean;
 
 public interface UserService {
@@ -8,6 +9,6 @@ public interface UserService {
 
     UserBean queryUserById(String id);
 
-    boolean updateUser(UserBean user);
+    boolean updateUser(UserDto user);
 
 }

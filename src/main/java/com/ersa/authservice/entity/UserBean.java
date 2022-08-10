@@ -5,7 +5,7 @@ import lombok.Data;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
-@Document("users")
+@Document("tb_users")
 public class UserBean {
 
     /**
@@ -27,6 +27,11 @@ public class UserBean {
      * 密码
       */
     private String password;
+
+    /**
+     * 注册时间
+     */
+    private long tmCreate;
 
     /**
      * 位置

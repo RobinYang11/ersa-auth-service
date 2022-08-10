@@ -1,15 +1,33 @@
 package com.ersa.authservice.ctrl;
 
-
+import com.ersa.authservice.dto.ResultDto;
+import com.ersa.authservice.entity.UserBean;
 import com.ersa.authservice.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
+@RestController
 public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @PostMapping("/api/createUser")
+    ResultDto create(@RequestBody UserBean  user){
+        ResultDto resultDto = new ResultDto();
+        try{
+            this.userService.createUser(user) ;
+            resultDto.setResult(user);
+            return resultDto;
+        } catch (Exception e){
+            resultDto.setError(e.toString());
+            return resultDto;
+        }
+    }
 
 }
 
