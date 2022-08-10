@@ -21,7 +21,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserBean queryUserById(String id) {
-        return null;
+        return this.mongoTemplate.findById(id,UserBean.class);
     }
 
     @Override
