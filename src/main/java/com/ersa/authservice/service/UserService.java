@@ -9,6 +9,8 @@ public interface UserService {
 
     UserBean queryUserById(String id);
 
+    UserBean queryUserByPhone(String phone);
+
     boolean updateUser(UserDto user);
 
 }
