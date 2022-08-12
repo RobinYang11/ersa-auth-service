@@ -3,6 +3,7 @@ package com.ersa.authservice.ctrl;
 import com.ersa.authservice.dto.ResultDto;
 import com.ersa.authservice.entity.UserBean;
 import com.ersa.authservice.service.UserService;
+import com.ersa.authservice.utils.TokenUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -48,6 +49,27 @@ public class UserController {
             return resultDto;
         }
     }
+
+    @GetMapping("/api/currentUser")
+    ResultDto currentUser(String token){
+
+        if(null == token){
+            log.error("未传token！");
+            throw  new IllegalArgumentException("未传token参数!");
+        }
+
+        ResultDto resultDto = new ResultDto();
+        try{
+            UserBean user = TokenUtil.getUserFromToken(token);
+            resultDto.setResult(user);
+            return resultDto;
+        } catch (Exception e){
+            log.error(e.toString());
+            resultDto.setError(e.toString());
+            return resultDto;
+        }
+    }
+
 
 }
 

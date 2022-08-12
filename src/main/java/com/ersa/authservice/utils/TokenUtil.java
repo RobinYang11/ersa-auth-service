@@ -38,7 +38,7 @@ public class TokenUtil {
      * @param token
      * @return
      */
-   UserBean getUserFromToken(String token) {
+   public static UserBean getUserFromToken(String token) {
        Claims claims = Jwts.parser()
                .setSigningKey(TokenUtil.generalKey())
                .parseClaimsJws(token).getBody();
