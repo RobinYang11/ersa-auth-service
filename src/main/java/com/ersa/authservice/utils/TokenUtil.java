@@ -2,6 +2,10 @@ package com.ersa.authservice.utils;
 
 
 import com.alibaba.fastjson.JSONObject;
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.ersa.authservice.entity.UserBean;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
@@ -93,6 +97,23 @@ public class TokenUtil {
                 .parseClaimsJws(jwtStr).getBody();
     }
 
+
+    /**
+     * @desc   验证token，通过返回true
+     * @params [token]需要校验的串
+     **/
+    public static boolean verify(String token){
+        try {
+            Algorithm algorithm = Algorithm.HMAC256(APP_TOKEN_SECRET);
+            JWTVerifier verifier = JWT.require(algorithm).build();
+            DecodedJWT jwt = verifier.verify(token);
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+            return  false;
+        }
+    }
+
     /**
      * 设置key值
      *
@@ -103,5 +124,15 @@ public class TokenUtil {
         SecretKey key = new SecretKeySpec(encodedKey, 0, encodedKey.length, "HmacSHA256");
         return key;
     }
+
+    public static void main(String[] args) throws Exception {
+        String token=  issueToken("2134325","sdf");
+        Object o = Jwts.parserBuilder().setSigningKey(APP_TOKEN_SECRET).build().parseClaimsJws(token);
+        System.out.println(o.toString());
+
+//       boolean res=  verify(token);
+//        System.out.printf("res"+res);
+    }
+
 
 }

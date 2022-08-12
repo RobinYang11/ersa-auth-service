@@ -41,7 +41,6 @@ public class AuthController {
             boolean isEqual =BCryptUtil.checkpw(loginDto.getPassword(),user.getPassword());
             if(isEqual) {
                 try {
-
                     String str=    JSONObject.toJSONString(user);
                     String token = TokenUtil.issueToken(user.getId(), str);
                     Claims claims = Jwts.parser()
