@@ -1,11 +1,17 @@
 package com.ersa.authservice.ctrl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.ersa.authservice.dto.LoginDto;
 import com.ersa.authservice.dto.ResultDto;
 import com.ersa.authservice.entity.UserBean;
 import com.ersa.authservice.service.UserService;
 import com.ersa.authservice.utils.BCryptUtil;
 import com.ersa.authservice.utils.TokenUtil;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.jackson.io.JacksonDeserializer;
+import io.jsonwebtoken.lang.Maps;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,13 +22,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class AuthController {
 
-
     @Autowired
     private UserService userService;
-
-//    public AuthController(UserService userService) {
-//        this.userService = userService;
-//    }
 
     @PostMapping("/api/loginWithPwd")
     ResultDto loginWithPwd(@RequestBody LoginDto loginDto){
@@ -40,7 +41,12 @@ public class AuthController {
             boolean isEqual =BCryptUtil.checkpw(loginDto.getPassword(),user.getPassword());
             if(isEqual) {
                 try {
-                    String token = TokenUtil.issueToken(user.getId(), user.toString());
+
+                    String str=    JSONObject.toJSONString(user);
+                    String token = TokenUtil.issueToken(user.getId(), str);
+                    Claims claims = Jwts.parser()
+                            .setSigningKey(TokenUtil.generalKey())
+                            .parseClaimsJws(token).getBody();
                     resultDto.setResult(token);
                     resultDto.setError("登录成功");
                     return resultDto;

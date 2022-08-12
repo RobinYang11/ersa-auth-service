@@ -21,10 +21,15 @@ public class UserController {
     ResultDto create(@RequestBody UserBean  user){
         ResultDto resultDto = new ResultDto();
         try{
+           UserBean existUser=  userService.queryUserByPhone(user.getPhone());
+           if(null != existUser){
+             throw new  IllegalArgumentException("手机号已注册");
+           }
             this.userService.createUser(user) ;
             resultDto.setResult(user);
             return resultDto;
         } catch (Exception e){
+            log.error(e.toString());
             resultDto.setError(e.toString());
             return resultDto;
         }
@@ -38,11 +43,11 @@ public class UserController {
             resultDto.setResult(user);
             return resultDto;
         } catch (Exception e){
+            log.error(e.toString());
             resultDto.setError(e.toString());
             return resultDto;
         }
     }
-
 
 }
 

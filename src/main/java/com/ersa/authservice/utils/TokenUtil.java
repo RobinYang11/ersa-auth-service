@@ -1,22 +1,20 @@
 package com.ersa.authservice.utils;
 
 
+import com.alibaba.fastjson.JSONObject;
+import com.ersa.authservice.entity.UserBean;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
-
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.util.Date;
 import java.util.UUID;
 
-
 @Slf4j
 public class TokenUtil {
-
 
     /**
      * Web端token最大有效时长，单位：秒
@@ -35,6 +33,19 @@ public class TokenUtil {
      */
     public static final String JWT_ID = UUID.randomUUID().toString();
 
+    /**
+     *  从token 中获取用户信息
+     * @param token
+     * @return
+     */
+   UserBean getUserFromToken(String token) {
+       Claims claims = Jwts.parser()
+               .setSigningKey(TokenUtil.generalKey())
+               .parseClaimsJws(token).getBody();
+       String sub = claims.getSubject();
+       UserBean user = JSONObject.parseObject(sub,UserBean.class);
+       return user;
+   }
 
     /**
      * 生成JWT token
@@ -44,7 +55,6 @@ public class TokenUtil {
      */
     public static String issueToken(String userId, String subject) throws Exception {
         try {
-//            SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
             //设置过期时间
             long presentTime = System.currentTimeMillis();
             Date issuedAtTime = new Date(presentTime);
@@ -60,8 +70,6 @@ public class TokenUtil {
                     // 签发时间
                     .setIssuedAt(issuedAtTime)
                     .signWith(secretKey)
-                    // 签名算法以及密匙
-//                    .signWith(signatureAlgorithm, secretKey)
                     // 过期时间
                     .setExpiration(expirationTime);
             return builder.compact();
