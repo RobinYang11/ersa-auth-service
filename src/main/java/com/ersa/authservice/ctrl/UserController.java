@@ -40,7 +40,9 @@ public class UserController {
     ResultDto create(String id){
         ResultDto resultDto = new ResultDto();
         try{
-            UserBean user = this.userService.queryUserById(id) ;
+            UserBean user = this.userService.queryUserById(id);
+            // 隐藏密码
+            user.setPassword(null);
             resultDto.setResult(user);
             return resultDto;
         } catch (Exception e){
@@ -61,6 +63,8 @@ public class UserController {
         ResultDto resultDto = new ResultDto();
         try{
             UserBean user = TokenUtil.getUserFromToken(token);
+            //隐藏密码
+            user.setPassword(null);
             resultDto.setResult(user);
             return resultDto;
         } catch (Exception e){
